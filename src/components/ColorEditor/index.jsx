@@ -1,15 +1,25 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { MdOutlinePalette } from "react-icons/md";
+import { EditorContext } from "../../contexts/EditorContext";
 import { themes } from "../../themes/themes";
 import { Wrapper } from "./styles";
 
-export function ColorEditor({ onSave, color: initialColor }) {
-  const [color, setColor] = useState(initialColor || "");
+export function ColorEditor({ onSave, initialColor }) {
+  const { color, setColor } = useContext(EditorContext);
   const [editingColor, setEditingColor] = useState(false);
+  const [tempColor, setTempColor] = useState(initialColor);
 
   function handleSave() {
-    onSave(color);
+    onSave(tempColor);
+    setEditingColor(false);
+    console.log(color);
+  }
+
+
+  function handleCancel() {
+    setTempColor(color);
+    setEditingColor(false);
   }
 
   return (
@@ -22,37 +32,35 @@ export function ColorEditor({ onSave, color: initialColor }) {
       />
       {editingColor && (
         <div className="color-editor">
-          <input
-            type="color"
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-          />
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              paddingLeft: '14px',
+              paddingRight: '14px',
               gap: '10px'
             }}
           >
             <FaCheck
               size={16}
               color={themes.dark.colors.success}
-              onClick={() => {
-                handleSave()
-                setEditingColor(false)
-              }}
+              onClick={handleSave}
               style={{ cursor: "pointer" }}
             />
             <FaTimes
               size={16}
               color={themes.dark.colors.danger}
-              onClick={() => setEditingColor(false)}
+              onClick={handleCancel}
               style={{ cursor: "pointer" }}
             />
           </div>
+         <input
+            value={tempColor}
+            type="color"
+            onChange={(e) => setTempColor(e.target.value)}
+          />
+          
         </div>
       )}
     </Wrapper>

@@ -13,10 +13,10 @@ export function AlignEditor({ onSave, align, ...props }) {
   ]
 
   function handleSave(item) {
-    setSelectedAlign(item.position)
+    setSelectedAlign(item.position);
     onSave(item.position);
+    console.log(item.position);
   }
-  
 
   return (
     <div className="align-icons" style={{ display: "flex" }}>
@@ -24,7 +24,7 @@ export function AlignEditor({ onSave, align, ...props }) {
         <Wrapper key={item.position}>
           <Button
             onClick={() => handleSave(item)}
-            style={selectedAlign === item.position ? { backgroundColor: themes.dark.colors.dark100 } : {backgroundColor: 'transparent'}}
+            style={selectedAlign === item.position ? { backgroundColor: themes.dark.colors.dark100 } : {backgroundColor: 'transparent' }}
           >
             {item.icon}
           </Button>

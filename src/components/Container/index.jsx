@@ -1,24 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from 'react';
 import { StyledContainer } from "./styles";
 import { ContainerEditor } from "../ContainerEditor";
+import { EditorContext } from "../../contexts/EditorContext";
 
 export function Container({
   height,
   width,
-  initialColor,
   border,
   shadow,
   blur,
   radius,
   children,
   padding,
-  initialAlign
 }) {
+  const { color, align, setColor, setAlign } = useContext(EditorContext);
+
   const [isEditing, setIsEditing] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-
-  const [color, setColor] = useState(initialColor)
-  const [align, setAlign] = useState(initialAlign)
 
   useEffect(() => {
     function handleMouseEnter() {
@@ -39,15 +37,18 @@ export function Container({
     };
   }, []);
 
+  useEffect(() => {
+    console.log("context changed: ", align, color);
+  }, [align, color])
+
   function handleEditClick() {
     setIsEditing(true);
   }
 
   function handleSave({ color, align }) {
-    setAlign(align)
-    setColor(color)
-    console.log("propriedades: ", color, align);
-    // aqui você pode usar setState ou outra forma para atualizar as propriedades do componente com os novos valores
+    setColor(color);
+    setAlign(align);
+    console.log( color, align );
   }
 
   return (
@@ -64,8 +65,7 @@ export function Container({
       align={align}
     >
       {children}
-      {
-        isHovered && <ContainerEditor onSave={handleSave} />}
-    </StyledContainer>  
+      {isHovered && <ContainerEditor onSave={handleSave} />}
+    </StyledContainer>
   );
 }

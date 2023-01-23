@@ -1,44 +1,44 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { FaEdit } from "react-icons/fa";
-import { themes } from "../../themes/themes";
+import { EditorContext } from "../../contexts/EditorContext";
 import { AlignEditor } from "../AlignEditor";
 import { ColorEditor } from '../ColorEditor';
-import { StyledEditor, EditorPanel, IconContainer } from "./styles";
+import { StyledEditor, EditorPanel, IconContainer, EditDiv } from "./styles";
+import { FaTimes } from "react-icons/fa";
 
 export function ContainerEditor({ onSave, ...props }) {
-  const [color, setColor] = useState(props.color || themes.dark.colors.background)
-  const [height, setHeight] = useState(props.height);
-  const [width, setWidth] = useState(props.width);
-  const [radius, setRadius] = useState(props.radius);
-  const [align, setAlign] = useState(props.align || 'center');
+  const { color, align, setColor, setAlign } = useContext(EditorContext);
   const [editing, setEditing] = useState(false);
 
-  function handleSave(color, align) {
+  function handleSave() {
     onSave({color, align});
     console.log("ContainerEditor", {color}, {align});
   }
-  
 
   return (
     <StyledEditor isOpen={editing} className="container-icons">
-        <FaEdit color="#fff" onClick={() => setEditing(!editing)} style={{ cursor: "pointer" }} />
-        {editing && (
+      {editing ? (
+        
           <EditorPanel>
             <IconContainer>
             <ColorEditor 
-              color={color}
-              onChange={setColor} // Passando a função setColor diretamente
-              onSave={handleSave}
+              initialColor={color}
+              onSave={setColor}
               onCancel={() => setEditing(false)}
             />
 
             </IconContainer>
             <AlignEditor 
-              align={align} 
-              onSave={(align) => handleSave(color, align)} 
+              align={align}
+              onSave={setAlign} 
               onCancel={() => setEditing(false)}
             />
+            <IconContainer><FaTimes size={20} color="#fff" onClick={() => setEditing(!editing)} style={{ cursor: "pointer" }}/></IconContainer>
           </EditorPanel>
+        ) : (
+          <EditDiv>
+            <FaEdit size={20} color="#fff" onClick={() => setEditing(!editing)} style={{ cursor: "pointer" }} />
+          </EditDiv>
         )}
     </StyledEditor>
   );

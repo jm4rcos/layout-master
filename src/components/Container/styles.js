@@ -1,13 +1,16 @@
 import styled, { css } from "styled-components";
 import { themes } from "../../themes/themes";
 
-export const StyledContainer = styled.div`
-  height: ${(props) => props.height || "50px"};
-  width: ${(props) => props.width || "100px"};
-  background-color: ${(props) => props.color || themes.dark.colors.background};
-  border-radius: ${(props) => props.radius || "0px"};
-  padding: ${(props) => props.padding || "0px"};
-  justify-content: ${(props) => props.align || "center"};
+export const StyledContainer = styled.div.attrs(props => ({
+  style: {
+      height: props.height,
+      width: props.width,
+      backgroundColor: props.color,
+      borderRadius: props.radius,
+      padding: props.padding,
+      justifyContent: props.align
+  },
+}))`
 
   display: flex;
   position: relative;
@@ -19,10 +22,6 @@ export const StyledContainer = styled.div`
   }
 `;
 
-StyledContainer.defaultProps = {
-  height: "50px", maxHeight: "50px",
-  width: "100px", maxWidth: "100px"
-};
 
 export const Wrapper = styled.div`
   position: relative;
