@@ -1,29 +1,43 @@
-import React, { useReducer } from 'react';
-import { themes } from '../themes/themes';
-
-const initialState = { color: themes.dark.colors.background, align: 'center' };
-
-const editorReducer = (state, action) => {
-    switch (action.type) {
-        case 'SET_COLOR':
-            return {...state, color: action.color};
-        case 'SET_ALIGN':
-            return {...state, align: action.align};
-        default:
-            throw new Error();
-    }
-};
+import React, { useEffect, useState } from "react";
+import { themes } from "../themes/themes";
 
 export const EditorContext = React.createContext();
 
 export function EditorProvider({ children }) {
-    const [state, dispatch] = useReducer(editorReducer, initialState);
-    const setColor = color => dispatch({ type: 'SET_COLOR', color });
-    const setAlign = align => dispatch({ type: 'SET_ALIGN', align });
+  const [containers, setContainers] = useState({
+    mainContainer: {
+      color: themes.dark.colors.background,
+      justify: "center",
+      align: "center",
+      cantSize: true,
+      zIndex: 10,
+    },
+    loginContainer: {
+      color: themes.light.colors.light500,
+      justify: "center",
+      align: "center",
+      width: "450px",
+      height: "400px",
+      zIndex: 100,
+    },
+    test: {
+      color: themes.light.colors.success,
+      justify: "center",
+      align: "center",
+      width: "250px",
+      height: "200px",
+      zIndex: 1000,
+    },
+  });
 
-    return (
-        <EditorContext.Provider value={{ color: state.color, align: state.align, setColor, setAlign }}>
-            {children}
-        </EditorContext.Provider>
-    );
+  return (
+    <EditorContext.Provider
+      value={{
+        containers,
+        setContainers,
+      }}
+    >
+      {children}
+    </EditorContext.Provider>
+  );
 }

@@ -8,15 +8,15 @@ export const StyledContainer = styled.div.attrs((props) => ({
     borderRadius: props.radius,
     padding: props.padding,
     justifyContent: props.align,
-    alignItems: props.justify,
-    zIndex: props.zIndex
   },
 }))`
   display: flex;
+  align-items: center;
   position: relative;
+  min-height: 100px;
+  min-height: 100px;
+
   box-sizing: border-box;
-  min-height: 100px;
-  min-height: 100px;
 
   &.hovered {
     border: solid 2px lightgreen;
@@ -27,7 +27,6 @@ export const StyledContainer = styled.div.attrs((props) => ({
 
 export const Wrapper = styled.div`
   /* position: relative;
-  
   display: flex;
   width: 40px;
   display: flex;

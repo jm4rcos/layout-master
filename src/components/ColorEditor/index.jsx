@@ -1,68 +1,66 @@
 import React, { useContext, useState } from "react";
-import { FaCheck, FaTimes } from "react-icons/fa";
-import { MdOutlinePalette } from "react-icons/md";
 import { EditorContext } from "../../contexts/EditorContext";
+import { Input } from "../Input";
+import { FaCheck, FaTimes } from "react-icons/fa";
 import { themes } from "../../themes/themes";
-import { Wrapper } from "./styles";
 
-export function ColorEditor({ onSave, initialColor }) {
-  const { color, setColor } = useContext(EditorContext);
-  const [editingColor, setEditingColor] = useState(false);
-  const [tempColor, setTempColor] = useState(initialColor);
+export function ColorEditor({ containerName, onSave }) {
+  const { containers, setContainers } = useContext(EditorContext);
+  const container = containers[containerName];
+  const [tempColor, setTempColor] = useState(container.color);
+  const [editing, setEditing] = useState(false)
 
   function handleSave() {
-    onSave(tempColor);
-    setEditingColor(false);
-    console.log(color);
+    onSave({ color: tempColor });
+    setContainers({
+      ...containers,
+      [containerName]: { ...container, color: tempColor },
+    });
   }
-
 
   function handleCancel() {
-    setTempColor(color);
-    setEditingColor(false);
+    setTempColor(container.color);
+    setEditing(false);
   }
-
   return (
-    <Wrapper>
-      <MdOutlinePalette
-        onClick={() => setEditingColor(true)}
-        style={{ cursor: "pointer" }}
-        size={30}
-        color={themes.light.colors.light500}
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        cursor: "pointer",
+        width: editing ? 60 : "auto",
+        justifyContent: "space-between",
+      }}
+    >
+      <input
+        style={{ width: 30, height: 30, cursor: "pointer" }}
+        value={tempColor}
+        type="color"
+        onChange={(e) => setTempColor(e.target.value)}
+        onClick={() => setEditing(true)}
       />
-      {editingColor && (
-        <div className="color-editor">
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingRight: '14px',
-              gap: '10px'
-            }}
-          >
-            <FaCheck
-              size={16}
-              color={themes.dark.colors.success}
-              onClick={handleSave}
-              style={{ cursor: "pointer" }}
-            />
-            <FaTimes
-              size={16}
-              color={themes.dark.colors.danger}
-              onClick={handleCancel}
-              style={{ cursor: "pointer" }}
-            />
-          </div>
-         <input
-            value={tempColor}
-            type="color"
-            onChange={(e) => setTempColor(e.target.value)}
+      {editing && (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
+        >
+          <FaCheck
+            size={16}
+            color={themes.dark.colors.success}
+            onClick={handleSave}
+            style={{ cursor: "pointer" }}
           />
-          
+          <FaTimes
+            size={16}
+            color={themes.dark.colors.danger}
+            onClick={handleCancel}
+            style={{ cursor: "pointer" }}
+          />
         </div>
       )}
-    </Wrapper>
+    </div>
   );
 }

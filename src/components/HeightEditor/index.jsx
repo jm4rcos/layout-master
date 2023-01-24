@@ -1,40 +1,29 @@
-import React, { useState } from "react";
-import { FaEdit, FaCheck, FaTimes } from "react-icons/fa";
+import React, { useContext, useState } from "react";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
+import { EditorContext } from "../../contexts/EditorContext";
 
-export function ColorEditor({ onSave, ...props }) {
-  const [bgColor, setBgColor] = useState(props.bgColor || "");
-  const [editingColor, setEditingColor] = useState(false);
+export function HeightEditor({ containerName }) {
+  const { containers, setContainers } = useContext(EditorContext);
+  const container = containers[containerName];
+  const [height, setHeight] = useState(container.height);
 
   function handleSave() {
-    onSave({ bgColor });
+    setContainers({
+      ...containers,
+      [containerName]: { ...container, height },
+    });
   }
 
   return (
-    <div>
-      <FaEdit
-        onClick={() => setEditingColor(true)}
-        style={{ cursor: "pointer" }}
+    <div className="height-editor">
+      <FaArrowUp onClick={() => setHeight(height + 10)} />
+      <input
+        type="number"
+        value={height}
+        onChange={(e) => setHeight(e.target.value)}
       />
-      {editingColor && (
-        <div className="color-editor">
-          <input
-            type="color"
-            value={bgColor}
-            onChange={(e) => setBgColor(e.target.value)}
-          />
-          <FaCheck
-            onClick={() => {
-              setEditingColor(false);
-              handleSave();
-            }}
-            style={{ cursor: "pointer" }}
-          />
-          <FaTimes
-            onClick={() => setEditingColor(false)}
-            style={{ cursor: "pointer" }}
-          />
-        </div>
-      )}
+      <FaArrowDown onClick={() => setHeight(height - 10)} />
+      <button onClick={handleSave}>Save</button>
     </div>
   );
 }

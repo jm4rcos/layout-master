@@ -15,7 +15,8 @@ export const themes = {
         warning: "#FDB913",
         hover: "#3C3D3F",
         active: "#262729",
-        disabled: "#434344"
+        disabled: "#434344",
+        inputColor: "#1F1F21"
       },
       font: {
         title: "24px",
