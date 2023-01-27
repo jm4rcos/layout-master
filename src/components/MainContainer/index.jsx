@@ -1,36 +1,27 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { EditorContext } from "../../contexts/EditorContext";
-import { StyledContainer } from "../Container/styles";
-import { ContainerEditor } from "../../components/ContainerEditor";
+import { StyledContainer } from "./styles";
 
-export function MainContainer({ containerName, cantSize, children, ...props }) {
+export function MainContainer({
+  handleSelect,
+  containerName,
+  children,
+  ...props
+}) {
   const { containers, setContainers } = useContext(EditorContext);
   const container = containers[containerName];
-
-  const [isEditing, setIsEditing] = useState(false);
 
   function handleSave(updatedProperties) {
     setContainers({
       ...containers,
       [containerName]: { ...container, ...updatedProperties },
     });
+    handleSelect(containerName);
   }
+
   return (
-    <StyledContainer
-      {...container}
-      {...props}
-      onMouseEnter={() => setIsEditing(true)}
-      onMouseLeave={() => setIsEditing(false)}
-    >
+    <StyledContainer onClick={handleSave} {...container} {...props}>
       {children}
-      {isEditing && (
-        <ContainerEditor
-          cantSize={cantSize}
-          containerName={containerName}
-          onSave={handleSave}
-          onCancel={() => setIsEditing(false)}
-        />
-      )}
     </StyledContainer>
   );
 }

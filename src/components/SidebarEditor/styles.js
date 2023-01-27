@@ -3,26 +3,24 @@ import { themes } from "../../themes/themes";
 
 export const StyledEditor = styled.div`
 
-  display: flex;
-  flex-direction: column;
-  background-color: ${themes.dark.colors.dark500};
-  max-width: 350px;
-  width: 300px;
-  gap: 10px;
-  /* padding: 18px; */
-  border-radius: 10px;
-  height: 400;
-`
+    position: absolute;
+    top: 0;
+    /* ${(props) => props.containerName === 'mainContainer' && css`right: 0;`}
+    ${(props) => props.containerAlign === 'flex-start' && (props.containerName !== 'mainContainer' && css`left: 0;`) }
+    ${(props) => props.containerAlign === 'flex-end' && (props.containerName !== 'mainContainer' && css`right: 0;`) }
+    ${(props) => props.containerAlign === 'center' && (props.containerName !== 'mainContainer' && css`right: 0;`) } */
+    z-index: 99999999;
+    margin: 10px;
+
+    ${(props) => props.isOpen && css`background-color: ${themes.dark.colors.active};`}`;
     
 
 export const EditorPanel = styled.div`
   display: flex;
-  flex-direction: column;
   background-color: ${themes.dark.colors.dark500};
-  max-width: 300px;
-  /* width: 100%; */
+  width: auto;
   gap: 10px;
-  padding: 18px;
+  padding: 10px;
   border-radius: 10px;
 `;
 
@@ -33,10 +31,8 @@ export const IconContainer = styled.button`
   width: auto;
   padding-inline: 8px;
   height: 40px;
-  width: 40px;
   border-radius: 5px;
-  background-color: ${(props) =>
-    props.color ? props.color : themes.dark.colors.dark500};
+  background-color: ${themes.dark.colors.dark100};
   cursor: pointer;
   outline: none;
   border: none;
@@ -56,5 +52,4 @@ export const EditDiv = styled.div`
   right: 0;
   z-index: 1;
   margin: 10px;
-  
 `;

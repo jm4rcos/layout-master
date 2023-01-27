@@ -26,11 +26,15 @@ export const StyledContainer = styled.div.attrs((props) => ({
 
 
 export const Wrapper = styled.div`
-  /* position: relative;
-  
   display: flex;
   width: 40px;
   display: flex;
   align-items: center;
-  justify-content: center; */
-`
+  justify-content: center;
+`;
+
+export const EditorContent = styled.div `
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;

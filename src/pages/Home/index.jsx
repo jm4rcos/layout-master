@@ -1,22 +1,44 @@
-import React from "react";
-import { EditorProvider } from "../../contexts/EditorContext";
+import React, { useContext, useState } from "react";
+import { EditorContext } from "../../contexts/EditorContext";
+import { StyledHome } from "./styles";
 import { MainContainer } from "../../components/MainContainer";
-import { Container } from "../../components/Container";
+import { SidebarEditor } from "../../components/SidebarEditor";
 
 export function Home() {
+  const [selectedContainer, setSelectedContainer] = useState("mainContainer");
+  const [newName, setNewName] = useState("");
+  const { containers } = useContext(EditorContext)
+
+  function handleSelect(containerName) {
+    setSelectedContainer(containerName);
+    console.log(containerName);
+  }
+
   return (
-    <EditorProvider>
+    <StyledHome>
       <MainContainer
-        containerName="mainContainer"
-        cantSize={true}
-        height="100vh"
-        width="100%"
+        containerName={newName || "mainContainer"}
+        handleSelect={handleSelect}
+        height="600px"
+        width="800px"
         padding="16px"
       >
-        <Container containerName="loginContainer">
-          <Container containerName="test"></Container>
-        </Container>
+        <MainContainer
+          containerName="loginContainer"
+          handleSelect={handleSelect}
+        >
+          <form>
+            <input type="text" placeholder="Username" />
+            <input type="password" placeholder="Password" />
+            <button>Login</button>
+          </form>
+        </MainContainer>
       </MainContainer>
-    </EditorProvider>
+      <SidebarEditor
+        containerName={selectedContainer}
+        handleSelect={handleSelect}
+        setNewName={setNewName}
+      />
+    </StyledHome>
   );
 }

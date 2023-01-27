@@ -1,10 +1,11 @@
 import React from "react";
-import { MainContainer } from "../MainContainer";
+import { StyledContainer } from "./styles";
 
 export function Container({ containerName, children, ...props }) {
+  console.log(containerName, props);
   return (
-    <MainContainer containerName={containerName} {...props}>
+    <StyledContainer containerName={containerName} {...props}>
       {children}
-    </MainContainer>
+    </StyledContainer>
   );
 }

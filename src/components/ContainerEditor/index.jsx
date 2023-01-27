@@ -6,13 +6,11 @@ import { ColorEditor } from "../ColorEditor";
 import { StyledEditor, EditorPanel, IconContainer, EditDiv } from "./styles";
 import { FaTimes } from "react-icons/fa";
 import { SizeEditor } from "../SizeEditor";
-import { Wrapper } from "../Container/styles";
 import { AlignEditor } from "../AlignEditor";
 
 export function ContainerEditor({ containerName, cantSize, ...props }) {
   const { containers, setContainers } = useContext(EditorContext);
   const container = containers[containerName];
-  const [editing, setEditing] = useState(false);
 
   const [selectedAlign, setSelectedAlign] = useState(container.align);
   const [selectedJustify, setSelectedJustify] = useState(container.justify);
@@ -36,59 +34,51 @@ export function ContainerEditor({ containerName, cantSize, ...props }) {
 
 
   return (
-    <>
-      {editing ? (
-        <StyledEditor
-          className="container-icons"
-          containerAlign={containers['mainContainer'].align}
+    <StyledEditor
+      className="container-icons"
+      containerAlign={containers["mainContainer"].align}
+      containerName={containerName}
+    >
+      <EditorPanel>
+        {!cantSize && (
+          <SizeEditor
+            containerName={containerName}
+            onSave={handleSave}
+            height={height}
+            width={width}
+            onHeightChange={handleHeightChange}
+            onWidthChange={handleWidthChange}
+          />
+        )}
+        <IconContainer>
+          <ColorEditor
+            color={color}
+            containerName={containerName}
+            onSave={handleSave}
+            // onCancel={() => setEditing(false)}
+          />
+        </IconContainer>
+        <JustifyEditor
+          justify={selectedJustify}
           containerName={containerName}
-        >
-          <EditorPanel>
-            {!cantSize && (
-              <SizeEditor
-                containerName={containerName}
-                onSave={handleSave}
-                height={height}
-                width={width}
-                onHeightChange={handleHeightChange}
-                onWidthChange={handleWidthChange}
-              />
-            )}
-            <IconContainer>
-              <ColorEditor
-                color={color}
-                containerName={containerName}
-                onSave={handleSave}
-                onCancel={() => setEditing(false)}
-              />
-            </IconContainer>
-            <JustifyEditor
-              justify={selectedJustify}
-              containerName={containerName}
-              onSave={handleSave}
-              onCancel={() => setEditing(false)}
-            />
-            <AlignEditor
-              align={selectedAlign}
-              containerName={containerName}
-              onSave={handleSave}
-              onCancel={() => setEditing(false)}
-            />
-            <IconContainer>
-              <FaTimes
-                size={20}
-                color="#fff"
-                onClick={() => setEditing(false)}
-                style={{ cursor: "pointer" }}
-              />
-            </IconContainer>
-          </EditorPanel>
-        </StyledEditor>
-      ) : (
-        <EditDiv onClick={() => setEditing(true)}>
-          <FiEdit size={24} color="#fff" style={{ cursor: "pointer" }} />
-        </EditDiv>
-      )}
-    </>
+          onSave={handleSave}
+          // onCancel={() => setEditing(false)}
+        />
+        <AlignEditor
+          align={selectedAlign}
+          containerName={containerName}
+          onSave={handleSave}
+          // onCancel={() => setEditing(false)}
+        />
+        <IconContainer>
+          <FaTimes
+            size={20}
+            color="#fff"
+            // onClick={() => setEditing(false)}
+            style={{ cursor: "pointer" }}
+          />
+        </IconContainer>
+      </EditorPanel>
+    </StyledEditor>
   );
 }

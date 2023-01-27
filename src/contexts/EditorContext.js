@@ -6,11 +6,12 @@ export const EditorContext = React.createContext();
 export function EditorProvider({ children }) {
   const [containers, setContainers] = useState({
     mainContainer: {
-      color: themes.dark.colors.background,
+      color: themes.dark.colors.dark300,
       justify: "center",
       align: "center",
       cantSize: true,
       zIndex: 10,
+      cantSize: true,
     },
     loginContainer: {
       color: themes.light.colors.light500,

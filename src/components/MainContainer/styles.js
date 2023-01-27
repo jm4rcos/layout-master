@@ -7,11 +7,11 @@ export const StyledContainer = styled.div.attrs((props) => ({
     backgroundColor: props.color,
     borderRadius: props.radius,
     padding: props.padding,
-    justifyContent: props.align,
+    justifyContent: props.justify,
+    alignItems: props.align
   },
 }))`
   display: flex;
-  align-items: center;
   position: relative;
   min-height: 100px;
   min-height: 100px;
@@ -23,13 +23,3 @@ export const StyledContainer = styled.div.attrs((props) => ({
     transition: all 0.1s ease-in-out;
   }
 `;
-
-
-export const Wrapper = styled.div`
-  /* position: relative;
-  display: flex;
-  width: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center; */
-`
