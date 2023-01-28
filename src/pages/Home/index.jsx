@@ -1,11 +1,12 @@
 import React, { useContext, useState } from "react";
 import { EditorContext } from "../../contexts/EditorContext";
 import { StyledHome } from "./styles";
-import { MainContainer } from "../../components/MainContainer";
+import { Container } from "../../components/Container";
 import { SidebarEditor } from "../../components/SidebarEditor";
+import { themes } from "../../themes/themes";
 
 export function Home() {
-  const [selectedContainer, setSelectedContainer] = useState("mainContainer");
+  const [selectedContainer, setSelectedContainer] = useState(["mainContainer"]);
   const [newName, setNewName] = useState("");
   const { containers } = useContext(EditorContext)
 
@@ -16,24 +17,21 @@ export function Home() {
 
   return (
     <StyledHome>
-      <MainContainer
+      <Container
         containerName={newName || "mainContainer"}
         handleSelect={handleSelect}
         height="600px"
         width="800px"
         padding="16px"
+        id="mainContainer"
       >
-        <MainContainer
+        <Container
           containerName="loginContainer"
           handleSelect={handleSelect}
+          id="loginContainer"
         >
-          <form>
-            <input type="text" placeholder="Username" />
-            <input type="password" placeholder="Password" />
-            <button>Login</button>
-          </form>
-        </MainContainer>
-      </MainContainer>
+        </Container>
+      </Container>
       <SidebarEditor
         containerName={selectedContainer}
         handleSelect={handleSelect}

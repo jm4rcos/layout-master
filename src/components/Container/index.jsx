@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useContext, useState } from "react";
+import { EditorContext } from "../../contexts/EditorContext";
 import { StyledContainer } from "./styles";
 
-export function Container({ containerName, children, ...props }) {
-  console.log(containerName, props);
+export function Container({ handleSelect, containerName, children, ...props }) {
+  const { containers, setContainers } = useContext(EditorContext);
+  const container = containers[containerName];
+
+  function handleSave(updatedProperties) {
+    setContainers({
+      ...containers,
+      [containerName]: { ...container, ...updatedProperties.target.id },
+    });
+  }
+
   return (
-    <StyledContainer containerName={containerName} {...props}>
+    <StyledContainer onClick={handleSave} {...container} {...props}>
       {children}
     </StyledContainer>
   );
