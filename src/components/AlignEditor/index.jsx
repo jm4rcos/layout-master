@@ -7,9 +7,9 @@ import { Button } from "./styles";
 import { EditorContext } from "../../contexts/EditorContext";
 import { Text } from "../Text";
 
-export function AlignEditor({ align, containerName, onSave, name, ...props }) {
+export function AlignEditor({ align, component, onSave, name, ...props }) {
   const { containers, setContainers } = useContext(EditorContext);
-  const container = containers[containerName];
+  const container = containers[component];
   const [selectAlign, setSelectAlign] = useState(align);
   const items = [
     {
@@ -31,7 +31,7 @@ export function AlignEditor({ align, containerName, onSave, name, ...props }) {
     onSave({ align: item.position });
     setContainers({
       ...containers,
-      [containerName]: { ...container, align: item.position },
+      [component]: { ...container, align: item.position },
     });
   }
 

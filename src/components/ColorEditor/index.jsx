@@ -4,22 +4,23 @@ import { Input } from "../Input";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import { themes } from "../../themes/themes";
 
-export function ColorEditor({ containerName, onSave }) {
+export function ColorEditor({ component, onSave }) {
   const { containers, setContainers } = useContext(EditorContext);
-  const container = containers[containerName];
-  const [tempColor, setTempColor] = useState(container.color);
+  console.log(component);
+  const [tempColor, setTempColor] = useState(component.color);
   const [editing, setEditing] = useState(false)
+
 
   function handleSave() {
     onSave({ color: tempColor });
     setContainers({
       ...containers,
-      [containerName]: { ...container, color: tempColor },
+      [component]: { ...component, color: tempColor },
     });
   }
 
   function handleCancel() {
-    setTempColor(container.color);
+    setTempColor(component.color);
     setEditing(false);
   }
   return (

@@ -10,23 +10,23 @@ import { Input } from "../Input";
 import { EditorContext } from "../../contexts/EditorContext";
 import { FaCheck, FaTimes } from "react-icons/fa";
 
-export function SizeEditor({ containerName, onSave, height, width, onHeightChange, onWidthChange,  }) {
+export function SizeEditor({ component, onSave, height, width, onHeightChange, onWidthChange,  }) {
   const { containers, setContainers } = useContext(EditorContext);
-  const container = containers[containerName];
+  const container = containers[component];
 
   const [editingHeight, setEditingHeight] = useState(false);
   const [editingWidth, setEditingWidth] = useState(false);
 
   const [inputHeight, setInputHeight] = useState(height);
   const [inputWidth, setInputWidth] = useState(width);
-  const [tempHeight, setTempHeight] = useState(container.height);
-  const [tempWidth, setTempWidth] = useState(container.width);
+  const [tempHeight, setTempHeight] = useState(component.height);
+  const [tempWidth, setTempWidth] = useState(component.width);
 
 
   function handleSave() {
     setContainers({
       ...containers,
-      [containerName]: { ...container, height: inputHeight, width: inputWidth },
+      [component]: { ...component, height: inputHeight, width: inputWidth },
     });
     onSave && onSave();
   }

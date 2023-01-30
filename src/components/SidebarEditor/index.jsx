@@ -10,39 +10,29 @@ import {
   StyledEditor,
 } from "../ContainerEditor/styles";
 import { FaTimes } from "react-icons/fa";
-import { Button } from "../JustifyEditor/styles";
+import { Button } from "../../components/Button";
 import { themes } from "../../themes/themes";
 import { Input } from "../Input";
 
-export function SidebarEditor({ setNewName, containerName, handleSelect }) {
+export function SidebarEditor({ selectedContainer, container, setNewName, handleSelect }) {
   const { containers, setContainers } = useContext(EditorContext);
 
-  const container = containers[containerName];
-  const [selectedAlign, setSelectedAlign] = useState(container.align);
-  const [selectedJustify, setSelectedJustify] = useState(container.justify);
-  const [height, setHeight] = useState(500);
-  const [width, setWidth] = useState(600);
-  const [color, setColor] = useState(container.color);
-
-  function handleSave() {
-    setContainers({
-      ...containers,
-      [containerName]: {
-        ...containers[containerName],
-        align: selectedAlign,
-        justify: selectedJustify,
-        height: height + "px",
-        width: width + "px",
-        color: color,
-      },
-    });
-    console.log(container);
+  function handleUpdate(newProps) {
+    const newContainers = [...containers];
+    newContainers[selectedContainer] = {
+      ...newContainers[selectedContainer],
+      ...newProps,
+    };
+    setContainers(newContainers);
+    console.log(newProps);
   }
+
+  console.log("sidebar: ", selectedContainer, container);
 
   return (
     <StyledEditor>
       <EditorPanel>
-        <IconContainer color={themes.dark.colors.danger}>
+      <IconContainer color={themes.dark.colors.danger}>
           <FaTimes
             style={{ width: "24px" }}
             onClick={() => handleSelect(null)}
@@ -50,43 +40,32 @@ export function SidebarEditor({ setNewName, containerName, handleSelect }) {
           />
         </IconContainer>
         <AlignEditor
-          containerName={containerName}
+          component={container}
           name="Align"
-          selectedAlign={selectedAlign}
-          setSelectedAlign={setSelectedAlign}
-          onSave={handleSave}
+          onSave={handleUpdate}
         />
         <JustifyEditor
-          containerName={containerName}
+          component={container}
           name="Justify"
-          selectedJustify={selectedJustify}
-          setSelectedJustify={setSelectedJustify}
-          onSave={handleSave}
+          onSave={handleUpdate}
         />
         <SizeEditor
-          containerName={containerName}
+          component={container}
           name="Size"
-          height={500}
-          setHeight={300}
-          width={600}
-          setWidth={800}
-          onSave={handleSave}
+          onSave={handleUpdate}
         />
         <ColorEditor
           name="Color"
-          color={color}
-          setColor={setColor}
-          containerName={containerName}
-          onSave={handleSave}
+          component={container}
+          onSave={handleUpdate}
         />
         <IconContainer>
           <Input
-            placeholder={containerName}
+            width={500}
+            placeholder={container.id}
             onChange={(e) => setNewName(e.target.value)}
           />
         </IconContainer>
-
-        {/* Enviar para a APi em SAVE!!! */}
       </EditorPanel>
     </StyledEditor>
   );

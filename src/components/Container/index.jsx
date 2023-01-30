@@ -2,20 +2,21 @@ import React, { useContext, useState } from "react";
 import { EditorContext } from "../../contexts/EditorContext";
 import { StyledContainer } from "./styles";
 
-export function Container({ handleSelect, containerName, children, ...props }) {
+export function Container({ selected, handleSelect, children, ...props }) {
   const { containers, setContainers } = useContext(EditorContext);
-  const container = containers[containerName];
 
-  function handleSave(updatedProperties) {
-    setContainers({
-      ...containers,
-      [containerName]: { ...container, ...updatedProperties.target.id },
-    });
-  }
+  const handleSave = () => {
+    const newContainers = [...containers];
+    newContainers[containers.findIndex(c => c.id === props.id)] = {
+      ...props,
+      children: children && children.length > 0 ? children : []
+    };
+    setContainers(newContainers);
+  };
 
   return (
-    <StyledContainer onClick={handleSave} {...container} {...props}>
-      {children}
+    <StyledContainer onClick={selected ? handleSave : () => handleSelect(props.id)} {...props}>
+      {children && children.length > 0 ? children.map(child => child) : null}
     </StyledContainer>
   );
 }

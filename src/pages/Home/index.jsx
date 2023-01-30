@@ -6,37 +6,50 @@ import { SidebarEditor } from "../../components/SidebarEditor";
 import { themes } from "../../themes/themes";
 
 export function Home() {
-  const [selectedContainer, setSelectedContainer] = useState(["mainContainer"]);
-  const [newName, setNewName] = useState("");
-  const { containers } = useContext(EditorContext)
+  const { containers } = useContext(EditorContext);
+  const [selectedContainer, setSelectedContainer] = useState(null);
+  
+  const handleSelect = (containerId) => {
+    const selectedIndex = containers.findIndex(c => c.id === containerId);
+    setSelectedContainer(selectedIndex);
+  };
 
-  function handleSelect(containerName) {
-    setSelectedContainer(containerName);
-    console.log(containerName);
-  }
+  const selected = selectedContainer !== null ? containers[selectedContainer] : {};
+  const { name } = selected;
+  const [newName, setNewName] = useState("");
 
   return (
     <StyledHome>
-      <Container
-        containerName={newName || "mainContainer"}
-        handleSelect={handleSelect}
-        height="600px"
-        width="800px"
-        padding="16px"
-        id="mainContainer"
-      >
+      {containers.map((container, index) => (
         <Container
-          containerName="loginContainer"
-          handleSelect={handleSelect}
-          id="loginContainer"
+          key={container.id}
+          handleSelect={() => handleSelect(container.id)}
+          padding="16px"
+          color={themes.dark.colors.dark300}
+          name={newName || name || "mainContainer"}
+          selected={selectedContainer === index}
+          {...container}
         >
+          {Array.isArray(container.children) && container.children.map((childContainer, index) => (
+            <Container
+              key={childContainer.id}
+              handleSelect={() => handleSelect(childContainer.id)}
+              padding="16px"
+              color={themes.light.colors.light500}
+              name={newName || childContainer.name}
+              selected={selectedContainer === index}
+              //{...childContainer}
+            />
+          ))}
         </Container>
-      </Container>
+      ))}
       <SidebarEditor
-        containerName={selectedContainer}
+        container={selected}
         handleSelect={handleSelect}
         setNewName={setNewName}
       />
     </StyledHome>
   );
+
+  
 }
